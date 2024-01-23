@@ -10,6 +10,7 @@
 /*** PROTOTYPE **********************************/
 
 /*** VARIABLE ***********************************/
+static Function_Handler p_FuncHandler[MAX_PEPRI_IRQ_NUM] = {NULL};
 
 /*** STATIC FUNCTION ****************************/
 
@@ -106,17 +107,241 @@ uint8_t Nvic_GetPriority(Irq_Number IrqNum_e)
     return RetValue_u8;
 }
 
-uint32_t Nvic_GetActive(Irq_Number IrqNum_e)
+uint8_t Nvic_IsActive(Irq_Number IrqNum_e)
 {
     uint32_t RegIndex_u32;
     uint32_t BitIndex_u32;
     uint8_t RetValue_u8;
-    uint8_t Loop_u8;
 
-    for(Loop_u8 = 0, Loop_u8 < 8U, Loop_u8++)
+    RegIndex_u32 = (uint32_t)IrqNum_e / (uint32_t)NUM_IRQ_PER_NVIC_IABR;
+    BitIndex_u32 = (uint32_t)IrqNum_e % (uint32_t)NUM_IRQ_PER_NVIC_IABR;
+
+    if(0U != (NVIC->ICPR[RegIndex_u32] & NVIC_IABR_IRQ_MASK(BitIndex_u32)))
     {
-        if(0 != (NVIC->IABR[Loop_u8] & 0xFFFFFFFF))
+        RetValue_u8 = (uint8_t)TRUE;
+    }
+    else
+    {
+        RetValue_u8 = (uint8_t)FALSE;
     }
 
     return RetValue_u8;
+}
+
+/* Handler functions re-definition */
+void EXTI16_PVD_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI16])();
+}
+void TAMP_STAMP_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI21])();
+}
+void EXTI22_RTC_WKUP_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI22])();
+}
+void FLASH_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_FLASH])();
+}
+void RCC_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_RCC])();
+}
+void EXTI0_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI0])();
+}
+void EXTI1_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI1])();
+}
+void EXTI2_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI2])();
+}
+void EXTI3_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI3])();
+}
+==>>void EXTI4_IRQHandler9(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI4])();
+}
+void DMA1_Stream0_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_0])();
+}
+void DMA1_Stream1_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_1])();
+}
+void DMA1_Stream2_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_2])();
+}
+void DMA1_Stream3_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_3])();
+}
+void DMA1_Stream4_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_4])();
+}
+void DMA1_Stream5_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_5])();
+}
+void DMA1_Stream6_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_6])();
+}
+void ADC_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_ADC])();
+}
+void EXTI9_5_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI9_5])();
+}
+void TIM1_BRK_TIM9_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM1_BRK_TIM9])();
+}
+void TIM1_UP_TIM10_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM1_UP_TIM10])();
+}
+void TIM1_TRG_COM_TIM11_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM1_TRG_COM_TIM11])();
+}
+void TIM1_CC_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM1_CC])();
+}
+void TIM2_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM2])();
+}
+void TIM3_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM3])();
+}
+void TIM4_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM4])();
+}
+void I2C1_EV_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_I2C1_EV])();
+}
+void I2C1_ER_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_I2C1_ER])();
+}
+void I2C2_EV_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_I2C2_EV])();
+}
+void I2C2_ER_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_I2C2_ER])();
+}
+void SPI1_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_SPI1])();
+}
+void SPI2_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_SPI2])();
+}
+void USART1_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_USART1])();
+}
+void USART2_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_USART2])();
+}
+void EXTI15_10_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI15_10])();
+}
+void EXTI17_RTC_Alarm_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI17])();
+}
+void EXTI18_OTG_FS_WKUP_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_EXTI18])();
+}
+void DMA1_Stream7_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA1_7])();
+}
+void SDIO_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_SDIO])();
+}
+void TIM5_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_TIM5])();
+}
+void SPI3_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_SPI3])();
+}
+void DMA2_Stream0_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_0])();
+}
+void DMA2_Stream1_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_1])();
+}
+void DMA2_Stream2_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_2])();
+}
+void DMA2_Stream3_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_3])();
+}
+void DMA2_Stream4_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_4])();
+}
+void OTG_FS_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_OTG_FS])();
+}
+void DMA2_Stream5_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_5])();
+}
+void DMA2_Stream6_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_6])();
+}
+void DMA2_Stream7_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_DMA2_7])();
+}
+void USART6_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_USART6])();
+}
+void I2C3_EV_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_I2C3_EV])();
+}
+void I2C3_ER_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_I2C3_ER])();
+}
+void SPI4_IRQHandler(void)
+{
+    (p_FuncHandler[IRQ_NUM_SPI4])();
 }
