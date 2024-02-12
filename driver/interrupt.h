@@ -1,16 +1,19 @@
-/*
- * File: interrupt.h
- * Author: phamtien758
- * 
- */
+/*******************************************************************************
+ * File  : interrupt.h       
+ * Author: phamtien758      
+ * Brief : Interrupt header file
+ ******************************************************************************/
 
 #ifndef INTERRUPT_H
 #define INTERRUPT_H
 
 /*** INCLUDE ************************************/
+
 #include "stm32f401re.h"
 
 /*** DEFINE *************************************/
+
+/* Number of IRQ in these register (register bit width / IRQ bit width) */
 #define NUM_IRQ_PER_NVIC_ISER    ((uint32_t)(NVIC_ISER_REG_WIDTH / \
                                              NVIC_ISER_BIT_PER_IRQ))
 
@@ -30,69 +33,31 @@
                                              NVIC_IPR_BIT_PER_IRQ))
 
 /*** TYPEDEF ************************************/
-/*
- * @Function_Handler
- *
- */
-typedef void (*Function_Handler)(void);
 
 /*** PROTOTYPE ************************************/
-void Nvic_EnableIrq(Irq_Number IrqNum_e);
-void Nvic_DisableIrq(Irq_Number IrqNum_e);
-void Nvic_SetPendingIrq(Irq_Number IrqNum_e);
-void Nvic_ClearPendingIrq(Irq_Number IrqNum_e);
-void Nvic_GetPendingIrq(Irq_Number IrqNum_e);
-void Nvic_SetPriority(Irq_Number IrqNum_e, Irq_Pri PriNum_e);
-uint8_t Nvic_GetPriority(Irq_Number IrqNum_e);
-uint32_t Nvic_GetActive(Irq_Number IrqNum_e);
 
-// /* Prototypes for interrupt handlers re-definition */
-// void EXTI16_PVD_IRQHandler(void);
-// void TAMP_STAMP_IRQHandler(void);
-// void EXTI22_RTC_WKUP_IRQHandler(void);
-// void FLASH_IRQHandler(void);
-// void RCC_IRQHandler(void);
-// void DMA1_Stream0_IRQHandler(void);
-// void DMA1_Stream1_IRQHandler(void);
-// void DMA1_Stream2_IRQHandler(void);
-// void DMA1_Stream3_IRQHandler(void);
-// void DMA1_Stream4_IRQHandler(void);
-// void DMA1_Stream5_IRQHandler(void);
-// void DMA1_Stream6_IRQHandler(void);
-// void ADC_IRQHandler(void);
-// void TIM1_BRK_TIM9_IRQHandler(void);
-// void TIM1_UP_TIM10_IRQHandler(void);
-// void TIM1_TRG_COM_TIM11_IRQHandler(void);
-// void TIM1_CC_IRQHandler(void);
-// void TIM2_IRQHandler(void);
-// void TIM3_IRQHandler(void);
-// void TIM4_IRQHandler(void);
-// void I2C1_EV_IRQHandler(void);
-// void I2C1_ER_IRQHandler(void);
-// void I2C2_EV_IRQHandler(void);
-// void I2C2_ER_IRQHandler(void);
-// void SPI1_IRQHandler(void);
-// void SPI2_IRQHandler(void);
-// void USART1_IRQHandler(void);
-// void USART2_IRQHandler(void);
-// void EXTI17_RTC_Alarm_IRQHandler(void);
-// void EXTI18_OTG_FS_WKUP_IRQHandler(void);
-// void DMA1_Stream7_IRQHandler(void);
-// void SDIO_IRQHandler(void);
-// void TIM5_IRQHandler(void);
-// void SPI3_IRQHandler(void);
-// void DMA2_Stream0_IRQHandler(void);
-// void DMA2_Stream1_IRQHandler(void);
-// void DMA2_Stream2_IRQHandler(void);
-// void DMA2_Stream3_IRQHandler(void);
-// void DMA2_Stream4_IRQHandler(void);
-// void OTG_FS_IRQHandler(void);
-// void DMA2_Stream5_IRQHandler(void);
-// void DMA2_Stream6_IRQHandler(void);
-// void DMA2_Stream7_IRQHandler(void);
-// void USART6_IRQHandler(void);
-// void I2C3_EV_IRQHandler(void);
-// void I2C3_ER_IRQHandler(void);
-// void SPI4_IRQHandler(void);
+/* Enable interrupt */
+void Nvic_EnableIrq(Irq_Number IrqNum_e);
+
+/* Disable interrupt */
+void Nvic_DisableIrq(Irq_Number IrqNum_e);
+
+/* Disable interrupt */
+void Nvic_SetPendingIrq(Irq_Number IrqNum_e);
+
+/* Clear pending state of interrupt */
+void Nvic_ClearPendingIrq(Irq_Number IrqNum_e);
+
+/* Check if an interrupt is pending or not */
+uint8_t Nvic_IsPendingIrq(Irq_Number IrqNum_e);
+
+/* Set priority of interrupt */
+void Nvic_SetPriority(Irq_Number IrqNum_e, Irq_Pri PriNum_e);
+
+/* Get priority value of interrupt */
+uint8_t Nvic_GetPriority(Irq_Number IrqNum_e);
+
+/* Check if an interrupt is pending or not */
+uint8_t Nvic_IsActive(Irq_Number IrqNum_e);
 
 #endif /* INTERRUPT_H */
